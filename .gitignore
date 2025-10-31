@@ -179,3 +179,8 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+#Ignore source data faking files except the dimension files
+.source_data/*
+!.source_data/oltp_data
+
