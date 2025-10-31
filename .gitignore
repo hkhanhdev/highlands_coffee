@@ -181,6 +181,9 @@ cython_debug/
 .cursorindexingignore
 
 #Ignore source data faking files except the dimension files
-.source_data/*
-!.source_data/oltp_data
+
+/source_data/*/
+!source_data/oltp_data/
+# !source_data/oltp_data/** 
+
 
