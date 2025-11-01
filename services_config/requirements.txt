@@ -11,3 +11,5 @@ s3fs==2025.2.0
 pyiceberg==0.8.1
 dask[distributed]==2025.10.0
 prefect==3.4.25
+polars==1.34.0
+faker==37.11.0
