@@ -1,7 +1,7 @@
 import polars as pl
 # import pandas as pd
 import random,os,datetime,time
-from faking_sources.modulars import *
+from modulars import *
 # from modulars import *
 
 # --- Cấu hình Cố định ---

@@ -1,6 +1,6 @@
 from pathlib import Path
 from faker import Faker
-import time, os, pyodbc, polars as pl, pandas as pd
+import time, os, polars as pl, pandas as pd
 from dotenv import load_dotenv
 # Khởi tạo Faker
 fake = Faker('vi_VN')
