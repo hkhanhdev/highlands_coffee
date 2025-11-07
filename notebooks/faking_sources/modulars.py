@@ -122,10 +122,10 @@ def get_single_parquet_data(file_path:str,which_cols:str="*") -> pl.DataFrame:
     #     raise FileNotFoundError(f"ERROR: Parquet file '{file_path}' does not exist or is not a file.")
     data = None
     if which_cols == "*":
-        data = pl.read_parquet(file_path)
+        data = pl.read_parquet(file_path, use_pyarrow=True)
     else:
         cols_to_read = [col.strip() for col in which_cols.split(',')]
-        data = pl.read_parquet(file_path)[cols_to_read]
+        data = pl.read_parquet(file_path, use_pyarrow=True)[cols_to_read]
     # end_time = time.time()
     # print(f"⏱️ Task runtime: {end_time - start_time:.4f} seconds")
     return data
@@ -139,12 +139,13 @@ def get_data_from_parquet(table_name:str,which_cols:str="*",mode:str="lastest") 
     if mode == "lastest":
         if not dirs_sorted:
             raise FileNotFoundError(f"ERROR: No dated directories found in output path '{OUTPUT_PATH}'.")
-        latest_dir = dirs_sorted[-1]
-        file_path =  latest_dir / f"{latest_dir.name}_{table_name}.parquet"
-        # Đọc file parquet ra
-        data = get_single_parquet_data(file_path,which_cols)
-        # rows_added = data.shape[0]
-        # total_rows += rows_added
+        # Start from the newest directory and go backward if file not found
+        for latest_dir in reversed(dirs_sorted):
+            file_path = latest_dir / f"{latest_dir.name}_{table_name}.parquet"
+            if file_path.exists():
+                # Found the latest valid parquet file
+                data = get_single_parquet_data(file_path, which_cols)
+                break
 
     elif mode == "incremental":
         for dirs in dirs_sorted:

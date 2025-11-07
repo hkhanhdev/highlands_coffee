@@ -59,14 +59,17 @@ def generate_and_write_transactions():
 @task(retries=3)
 def generate_and_write_transaction_details():
     start_id, order_id = 0, 1
+    transactions_df = pl.DataFrame()
     try:
         transactions_df = get_data_from_parquet("customer_transactions", "*")
+        # get_run_logger().info(f"Fetched customer_transactions data for detail generation \n {transactions_df}")
         last_df = get_data_from_parquet("transaction_details", "id,order_id")
+        # get_run_logger().info(f"Last transaction_details : \n {last_df}")
         start_id = int(last_df["id"].tail(1).item())
         order_id = int(last_df["order_id"].tail(1).item())
-    except Exception:
+    except Exception as e:
+        get_run_logger().warning(e)
         get_run_logger().warning("Bắt đầu từ id = 0 (transaction_details chưa tồn tại)")
-        transactions_df = None
 
     details_df = get_transaction_details(transactions_df, last_detail_id=start_id, last_order_id=order_id)
     write_dataframe_to_parquet(details_df, "transaction_details")
@@ -79,9 +82,6 @@ def generate_and_write_transaction_details():
 
 @flow(name="faking_pipeline")
 def faking_pipeline():
-    # print("🚀 Bắt đầu flow faking_pipeline...")
-    # print("Faking Pipeline is running...")
-    # print("Faking Pipeline completed.")
     if check_daily_limit("customers"):
         generate_and_write_customers()
     if check_daily_limit("customer_transactions"):
