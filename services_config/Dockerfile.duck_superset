@@ -1,0 +1,33 @@
+# ───────────────────────────────
+# Dockerfile: superset-duckdb
+# ───────────────────────────────
+FROM apache/superset:GHA-dev-19057636967
+
+# 1. Switch to root to install packages
+USER root
+
+# 2. Install DuckDB + engine
+RUN pip install --no-cache-dir \
+    duckdb==1.1.2 \
+    duckdb-engine
+
+# 3. Create persistent DuckDB file + folder
+RUN mkdir -p /home/superset && \
+    touch /home/superset/iceberg.duckdb && \
+    chown -R superset:superset /home/superset
+
+# 4. Switch back to superset user
+USER superset
+
+# 5. Auto-init on first container start
+ENV SUPERSET_SECRET_KEY=supersecretkey
+ENV ADMIN_USERNAME=admin
+ENV ADMIN_PASSWORD=admin
+ENV ADMIN_EMAIL=admin@superset.com
+
+# 6. First-boot script
+COPY --chown=superset:superset superset_entrypoint.sh /app/superset_entrypoint.sh
+RUN chmod +x /app/superset_entrypoint.sh
+
+ENTRYPOINT ["/app/superset_entrypoint.sh"]
+CMD ["gunicorn", "superset.app:create_app()", "--bind", "0.0.0.0:8088"]
