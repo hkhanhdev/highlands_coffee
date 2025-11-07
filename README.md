@@ -7,11 +7,32 @@ Highlands Coffee is a massive F&B franchise in Vietnam started in 1998 with appr
 With such an enormous number of loyal customers, it will result in an gigantic amount of data collected daily that Highlands Coffee needs to harvest and ultilize those “gold mine”.
 
 ## Business Requirements
-- Technical:
-    - System
-- Non-technical:
-    - sdfsdfsd
-    - sdfsdfsdf
+1. Top hot products (Sản phẩm nổi bật)
+    - Xác định danh sách các sản phẩm bán chạy nhất (Top N) dựa trên số lượng bán hoặc doanh thu.
+    - Phân tích sản phẩm bán chạy theo khu vực hoặc thời gian (Ví dụ: Top 10 sản phẩm tháng trước).
+    - Xác định các sản phẩm ít được quan tâm để xem xét việc ngừng bán hoặc đẩy mạnh khuyến mãi.
+    - Phân tích mối quan hệ giữa kích cỡ và doanh số.
+2. Customer Behavior (Hành vi khách hàng)
+    - Xác định phân khúc khách hàng dựa trên thành viên.
+    - Phân tích giá trị trọn đời của khách hàng (CLV) và tần suất mua hàng.
+    - Xác định tỷ lệ chuyển đổi giữa các cấp độ thành viên để đánh giá hiệu quả chương trình thành viên.
+    - Phân tích thói quen sử dụng coupon: Khách hàng nào thường xuyên dùng coupon, loại coupon nào được dùng nhiều nhất.
+    - Phân tích phương thức thanh toán ưa thích theo từng nhóm khách hàng.
+3. Sales Performance (Hiệu suất bán hàng)
+    - Theo dõi tổng doanh thu, số lượng giao dịch, và giá trị đơn hàng trung bình (AOV) theo ngày/tuần/tháng/năm.
+    - Đánh giá hiệu suất bán hàng theo cửa hàng  và nhân viên.
+    - Phân tích lợi nhuận gộp hoặc doanh thu thuần theo từng sản phẩm/nhóm sản phẩm.
+    - Theo dõi tình trạng đơn hàng để xác định tỷ lệ hủy/hoàn trả.
+4. Coupon & Discount Effectiveness (Hiệu quả khuyến mãi)
+    - Đo lường mức độ sử dụng của từng coupon và tỷ lệ chuyển đổi.
+    - Tính toán tổng giá trị chiết khấu và tác động của nó lên doanh thu thuần.
+    - Phân tích hiệu quả của các loại chiết khấu và giá trị khác nhau.
+    - Kiểm tra việc tuân thủ các giới hạn sử dụng  và ngày hết hạn của coupon.
+5. Geographical Analysis (Phân tích địa lý)
+    - Xác định các cửa hàng/thành phố có doanh thu cao nhất/thấp nhất.
+    - Phân tích mô hình mua hàng (sản phẩm, coupon, v.v.) theo từng vị trí cửa hàng.
+    - Đánh giá sự tập trung hoặc phân bổ của khách hàng theo khu vực.
+
 
 ## Tech Stack
 - Data Processing Engine: [**Dask(Python)**](https://docs.dask.org/en/stable/index.html)
@@ -25,7 +46,7 @@ With such an enormous number of loyal customers, it will result in an gigantic a
 
 ## Source Datasets
 - Describe
-- Database diagram here
+![Data Source ERD](doc_templates/data_source_erd.png)
 
 ## Data Modeling
 - Describe
