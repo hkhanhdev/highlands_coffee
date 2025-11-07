@@ -2,7 +2,6 @@ import polars as pl
 # import pandas as pd
 import random,os,datetime,time
 from modulars import *
-# from modulars import *
 # NUM_RECORDS_TO_GENERATE = 10
 
 def get_transaction_details(transactions_df:pl.DataFrame,last_order_id:int=1,last_detail_id:int=0) -> pl.DataFrame:
