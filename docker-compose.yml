@@ -3,7 +3,7 @@ services:
   minio:
     hostname: minio
     container_name: minio
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z-cpuv1
     environment:
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
@@ -22,12 +22,12 @@ services:
     networks:
       data_net:
         aliases:
-          - mycatalog.minio
-          # - highlands-coffee-warehouse.minio
+          # - mycatalog.minio
+          - highlands-coffee-warehouse.minio
 
   iceberg-rest:
     hostname: iceberg-rest
-    image: tabulario/iceberg-rest:latest
+    image: tabulario/iceberg-rest:1.6.0
     container_name: iceberg-rest
     ports:
       - "8181:8181"
@@ -47,7 +47,7 @@ services:
       - data_net
 
   prefect:
-    image: prefecthq/prefect:3-latest
+    image: prefecthq/prefect:3-python3.10
     container_name: prefect
     command: >
       prefect server start --host 0.0.0.0 --port 4200
@@ -56,6 +56,7 @@ services:
     ports:
       - "4200:4200"
     volumes:
+      - ./notebooks:/app
       - ./prefect:/root/.prefect
     networks:
       - data_net
@@ -63,7 +64,7 @@ services:
 
   # --- Dask Scheduler ---
   dask-scheduler:
-    image: daskdev/dask:latest
+    image: daskdev/dask:2025.10.0-py3.10
     container_name: dask-scheduler
     command: bash -c "pip install --no-cache-dir s3fs==2025.2.0 && dask scheduler"
     ports:
@@ -76,7 +77,7 @@ services:
 
   # --- Dask Workers ---
   dask-worker:
-    image: daskdev/dask:latest
+    image: daskdev/dask:2025.10.0-py3.10
     depends_on:
       - dask-scheduler
     command: bash -c "pip install --no-cache-dir s3fs==2025.2.0 && dask worker tcp://dask-scheduler:8786"
@@ -94,7 +95,7 @@ services:
       dockerfile: Dockerfile.duck_dask
     container_name: duckdask
     working_dir: /app
-    command: tail -f /dev/null
+    command: bash -c "prefect worker start --pool duckdask --type process"
     environment:
       PYICEBERG_CATALOG__MYCATALOG__URI: http://iceberg-rest:8181
       PYICEBERG_CATALOG__MYCATALOG__TYPE: rest
@@ -105,6 +106,7 @@ services:
       AWS_REGION: us-east-1
     volumes:
       - ./notebooks:/app
+      - ./source_data:/opt/source_data
     depends_on:
       - iceberg-rest
       - minio
@@ -113,26 +115,16 @@ services:
 
   # --- Apache Superset ---
   superset:
-    image: apache/superset:latest
+    build:
+      context: ./services_config
+      dockerfile: Dockerfile.duck_superset    
     container_name: superset
-    environment:
-      SUPERSET_SECRET_KEY: "supersecretkey"
-      SUPERSET_ADMIN_USERNAME: admin
-      SUPERSET_ADMIN_PASSWORD: admin
-      SUPERSET_ADMIN_EMAIL: admin@superset.com
-    ports:
-      - "8088:8088"
-    ## Chạy lần đầu tiên để tạo user admin
-    # commands:
-    #   - superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@example.com --password admin
-    #   - superset db upgrade
-    #   - superset init
-    depends_on:
-      - duckdask
+    ports: [ "8088:8088" ]
     volumes:
-      - ./superset:/app/superset_home
-    networks:
-      - data_net
+      - ./superset:/home/superset
+    depends_on: [ duckdask, minio, iceberg-rest ]
+    networks: [ data_net ]
+    restart: unless-stopped
 
 volumes:
   minio_data:
