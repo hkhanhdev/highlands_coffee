@@ -183,3 +183,5 @@ cython_debug/
 /prefect
 /superset
 /minio_data
+/source_data/*/
+!source_data/oltp_data/
