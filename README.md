@@ -1,14 +1,36 @@
-# Highlands Coffee Data Engineering Project
+# HIGHLANDS COFFEE CUSTOMER DATA PLATFORM
 
-Welcome to the Highlands Coffee Data Engineering project! This repository contains resources, scripts, and documentation for managing, analyzing, and processing data related to Highlands Coffee's business operations.
+### [Details documentation for this project](https://docs.google.com/document/d/1TFMjEwBEdsqwjRntoJBbdTxGBDMrZDT2P2ruBFSytm0/edit?tab=t.0)
 
 ## Project Overview
+Highlands Coffee is a massive F&B franchise in Vietnam started in 1998 with approximately 900 store branches located all across the country till now. With average 150 customers each store served daily, that means roughly 135,000 customers total daily. Including take-away orders and customers who served on-site. 
+With such an enormous number of loyal customers, it will result in an gigantic amount of data collected daily that Highlands Coffee needs to harvest and ultilize those “gold mine”.
 
-This project is designed to support data-driven decision making for Highlands Coffee by providing:
-- Data ingestion and ETL pipelines
-- Data analysis and reporting tools
-- Documentation templates for data engineering and project management
-- Sample datasets for orders, users, products, and transactions
+## Business Requirements
+- Technical:
+    - System
+- Non-technical:
+    - sdfsdfsd
+    - sdfsdfsdf
+
+## Tech Stack
+- Data Processing Engine: **Dask(Python)** Hyperlink
+- Workflow Orchestration: **Prefect** Hyperlink
+- ACID Table Format: **Apache Iceberg**
+- S3-compatible object storage: **Minio**
+- In-memory high performance SQL engine: **DuckDB**
+
+## Data Architecture
+[Data Architecture](doc_templates/data_architecture.png)
+
+## Source Datasets
+- Describe
+- Database diagram here
+
+## Data Modeling
+- Describe
+- Database diagram here
+
 
 ## Repository Structure
 - `data/`: Contains raw and processed CSV files for orders and user summaries.
