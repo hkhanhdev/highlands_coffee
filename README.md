@@ -14,14 +14,14 @@ With such an enormous number of loyal customers, it will result in an gigantic a
     - sdfsdfsdf
 
 ## Tech Stack
-- Data Processing Engine: **Dask(Python)** Hyperlink
-- Workflow Orchestration: **Prefect** Hyperlink
-- ACID Table Format: **Apache Iceberg**
-- S3-compatible object storage: **Minio**
-- In-memory high performance SQL engine: **DuckDB**
+- Data Processing Engine: [**Dask(Python)**](https://docs.dask.org/en/stable/index.html)
+- Workflow Orchestration: [**Prefect**](https://docs.prefect.io/v3/get-started)
+- ACID Table Format: [**Apache Iceberg**](https://iceberg.apache.org/docs/nightly/)
+- S3-compatible object storage: [**MinIO**](https://docs.min.io/enterprise/aistor-object-store/)
+- In-memory high performance SQL engine: [**DuckDB**](https://duckdb.org/)
 
 ## Data Architecture
-[Data Architecture](doc_templates/data_architecture.png)
+![Data Architecture](doc_templates/data_architecture.png)
 
 ## Source Datasets
 - Describe
@@ -29,7 +29,7 @@ With such an enormous number of loyal customers, it will result in an gigantic a
 
 ## Data Modeling
 - Describe
-- Database diagram here
+![Silver layer data model](doc_templates/silver_layer_data_model.png)
 
 
 ## Repository Structure
