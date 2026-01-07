@@ -1,5 +1,16 @@
 name : highlands_coffee
 services:
+  postgres:
+    image: postgres:14
+    container_name: iceberg-postgres
+    environment:
+      POSTGRES_DB: iceberg
+      POSTGRES_USER: iceberg
+      POSTGRES_PASSWORD: iceberg
+    volumes:
+      - iceberg_pg:/var/lib/postgresql/data
+    networks:
+      - data_net
   minio:
     hostname: minio
     container_name: minio
@@ -40,6 +51,9 @@ services:
       - CATALOG_S3_ENDPOINT=http://minio:9000
       - CATALOG_S3_PATH_STYLE_ACCESS=true
       - CATALOG_S3_FORCE_PATH_STYLE=true
+      - CATALOG_JDBC_URI=jdbc:postgresql://postgres:5432/iceberg
+      - CATALOG_JDBC_USER=iceberg
+      - CATALOG_JDBC_PASSWORD=iceberg
     depends_on:
       minio:
         condition: service_healthy
@@ -72,6 +86,7 @@ services:
       - "8787:8787"   # dashboard
     volumes:
       - ./dask:/workspace
+      - ./source_data:/opt/source_data
     networks:
       - data_net
 
@@ -85,6 +100,7 @@ services:
       replicas: 2
     volumes:
       - ./dask:/workspace
+      - ./source_data:/opt/source_data
     networks:
       - data_net
 
@@ -128,6 +144,7 @@ services:
 
 volumes:
   minio_data:
+  iceberg_pg:
 
 networks:
   data_net:
